@@ -18,6 +18,8 @@ function sunset_add_admin_page() {
 
 	add_submenu_page( 'sunset_general_slug', 'CSS options', 'CSS', 'manage_options', 'sunset_css_slug', 'sunset_css_callback' );
 
+	add_submenu_page( 'sunset_general_slug', 'Sunset Theme options', 'Theme Optons', 'manage_options', 'sunset_theme_options_slug', 'sunset_theme_options_callback' );
+
 	//activate custom settings
 	add_action( 'admin_init', 'sunset_custom_settings' );
 	
@@ -27,17 +29,31 @@ add_action( 'admin_menu', 'sunset_add_admin_page' );
 //custom settings function
 function sunset_custom_settings(){
 
+    /* 
+       ========================
+		Sidebar options
+	   ========================
+
+     */
+    register_setting( 'sunset-settings-group', 'profile_picture_url' );
 	register_setting( 'sunset-settings-group', 'first_name' );
 	register_setting( 'sunset-settings-group', 'last_name' );
 	register_setting( 'sunset-settings-group', 'twitter_handler' , 'sunset_sanitize_twitter_handler');
 	register_setting( 'sunset-settings-group', 'facebook_handler' );
 	register_setting( 'sunset-settings-group', 'gplus_handler' );
+	register_setting( 'sunset-settings-group', 'description' );
 
     //adding section sidebar
 	add_settings_section( 'sunset-section-sidebar-options-id', 'Sidebar Options', 'sunset_section_sidebar_options_callback', 'sunset_general_slug' );
 
+	//adding profile picture field
+	add_settings_field( 'sunset-profile-picture-field-id', 'Profile Picture', 'sunset_profile_picture_callback', 'sunset_general_slug', 'sunset-section-sidebar-options-id' );
+
 	//adding full name field
 	add_settings_field( 'sunset-full-name-field-id', 'Full Name', 'sunset_full_name_callback', 'sunset_general_slug', 'sunset-section-sidebar-options-id' );
+
+    //adding description
+	add_settings_field( 'sunset-description-field-id', 'Description', 'sunset_description_callback', 'sunset_general_slug', 'sunset-section-sidebar-options-id' );
 
 	//adding twitter field
 	add_settings_field( 'sunset-twitter-field-id', 'Twitter', 'sunset_twitter_callback', 'sunset_general_slug', 'sunset-section-sidebar-options-id' );
@@ -48,10 +64,53 @@ function sunset_custom_settings(){
 	//adding Gplus field
 	add_settings_field( 'sunset-gplus-field-id', 'Google+', 'sunset_gplus_callback', 'sunset_general_slug', 'sunset-section-sidebar-options-id' );
 
+
+	/* 
+       ========================
+		Theme Options
+	   ========================
+
+     */
+
+    register_setting( 'sunset-theme-group', 'post_formats' );
+
+    //adding theme options section
+    add_settings_section( 'sunset-theme-options-section-id', 'Theme options', 'sunset_section_theme_options_callback', 'sunset_theme_options_slug' );
+    add_settings_field( 'sunset-post-format-field-id', 'Post Formats', 'sunset_post_format_callback', 'sunset_theme_options_slug', 'sunset-theme-options-section-id' );
+
 	
+}
+
+//callback section :theme options
+
+function sunset_section_theme_options_callback(){
+
+	echo "<h4>Customize theme options</h4>";
+}
+
+//callback field : post formats
+
+function sunset_post_format_callback(){
+
+	$options = get_option( 'post_formats' );
+
+	$formats = get_post_format_slugs();
+
+	$output = '';
+	foreach ( $formats as $format ){
+		$checked = (isset($options[$format]) && $options[$format] == 1 ? "checked" : "");
+		$output .= '<label><input type="checkbox" id="'.$format.'" name="post_formats['.$format.']" value="1" '.$checked.' /> '.$format.'</label><br>';
+	}
+	echo $output;
 
 
+}
 
+
+//callback field: profile picture
+function sunset_profile_picture_callback(){
+	$profile_picture_url = esc_attr( get_option( 'profile_picture_url' ) );
+	echo '<input type="button" class="btn btn-secondary" id="upload_button" value="Upload profile picture" /><input type="hidden" id="profile_picture_url" name="profile_picture_url" value="'.$profile_picture_url.'"  />  ';
 }
 
 
@@ -80,6 +139,12 @@ function sunset_gplus_callback(){
 	echo '<input type="text" name="gplus_handler" value="'.$gplus.'" placeholder="Enter gplus handler " />  ';
 }
 
+//callback field: description
+function sunset_description_callback(){
+	$description = esc_attr( get_option( 'description' ) );
+	echo '<input type="text" name="description" value="'.$description.'" placeholder="Description " /> <p class="description">Write something smart.</p> ';
+}
+
 
 
 
@@ -104,6 +169,12 @@ function sunset_sanitize_twitter_handler($input){
 function sunset_general_callback() {
 	//generation of general page
 	require_once(get_template_directory().'/inc/admin-templates/sunset-general.php');
+}
+
+//theme options page 
+function sunset_theme_options_callback(){
+
+	require_once(get_template_directory().'/inc/admin-templates/sunset-theme-options.php');
 }
 
 //css page
