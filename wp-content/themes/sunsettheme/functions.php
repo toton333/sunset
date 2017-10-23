@@ -1,6 +1,7 @@
 <?php
 
 require get_template_directory() . '/inc/function-admin.php';
+require get_template_directory() . '/inc/custom-post-type.php';
 
 /*
 	
@@ -36,4 +37,13 @@ add_action( 'admin_enqueue_scripts', 'sunset_load_admin_scripts' );
 $options = get_option('post_formats');
 if (!empty($options)) {
   add_theme_support('post-formats', array_keys($options));
+}
+
+$header = get_option( 'custom_header' );
+if( isset($header) && $header == 1 ){
+	add_theme_support( 'custom-header' );
+}
+$background = get_option( 'custom_background' );
+if( isset($background) && $background == 1 ){
+	add_theme_support( 'custom-background' );
 }

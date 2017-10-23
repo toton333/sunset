@@ -6,7 +6,7 @@
 <h1>Sunset theme options</h1>
 
 <form action="options.php" method="post" class="sunset-general-form">
-	<?php settings_fields( 'sunset-theme-group' ); ?>
+	<?php settings_fields( 'sunset-theme-support' ); ?>
 	<?php  do_settings_sections('sunset_theme_options_slug' ); ?>
 	<?php submit_button(); ?>
 </form>

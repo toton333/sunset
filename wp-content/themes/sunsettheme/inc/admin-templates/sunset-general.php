@@ -29,5 +29,5 @@
 <form action="options.php" method="post" class="sunset-general-form">
 	<?php settings_fields( 'sunset-settings-group' ); ?>
 	<?php do_settings_sections('sunset_general_slug' ); ?>
-	<?php submit_button(); ?>
+	<?php submit_button('Save Changes' , 'primary' , 'btnSave'); ?>
 </form>

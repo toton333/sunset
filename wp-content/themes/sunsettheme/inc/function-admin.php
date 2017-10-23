@@ -16,9 +16,13 @@ function sunset_add_admin_page() {
     //slug and callback need to match with parent menu to remove parent label from submenu list
 	add_submenu_page( 'sunset_general_slug', 'General Options', 'General', 'manage_options', 'sunset_general_slug', 'sunset_general_callback'); 
 
+	add_submenu_page( 'sunset_general_slug', 'Sunset Theme options', 'Theme Optons', 'manage_options', 'sunset_theme_options_slug', 'sunset_theme_options_callback' );
+
+	add_submenu_page( 'sunset_general_slug', 'Sunset Contact Form', 'Contact Form', 'manage_options', 'sunset_contact_form_slug', 'sunset_contact_form_callback' );
+
 	add_submenu_page( 'sunset_general_slug', 'CSS options', 'CSS', 'manage_options', 'sunset_css_slug', 'sunset_css_callback' );
 
-	add_submenu_page( 'sunset_general_slug', 'Sunset Theme options', 'Theme Optons', 'manage_options', 'sunset_theme_options_slug', 'sunset_theme_options_callback' );
+	
 
 	//activate custom settings
 	add_action( 'admin_init', 'sunset_custom_settings' );
@@ -72,14 +76,53 @@ function sunset_custom_settings(){
 
      */
 
-    register_setting( 'sunset-theme-group', 'post_formats' );
+    register_setting( 'sunset-theme-support', 'post_formats' );
+    register_setting( 'sunset-theme-support', 'custom_header' );
+	register_setting( 'sunset-theme-support', 'custom_background' );
 
     //adding theme options section
     add_settings_section( 'sunset-theme-options-section-id', 'Theme options', 'sunset_section_theme_options_callback', 'sunset_theme_options_slug' );
+
     add_settings_field( 'sunset-post-format-field-id', 'Post Formats', 'sunset_post_format_callback', 'sunset_theme_options_slug', 'sunset-theme-options-section-id' );
+
+    add_settings_field( 'sunset-custom-header-field-id', 'Custom Header', 'sunset_custom_header_callback', 'sunset_theme_options_slug', 'sunset-theme-options-section-id' );
+
+    add_settings_field( 'sunset-custom-background-field-id', 'Custom background', 'sunset_custom_background_callback', 'sunset_theme_options_slug', 'sunset-theme-options-section-id' );
+
+    /* 
+       ========================
+		Contact Form Options
+	   ========================
+
+     */
+	register_setting( 'sunset-contact-options', 'activate_contact' );
+	
+	add_settings_section( 'sunset-contact-section-id', 'Contact Form', 'sunset_contact_section_callback', 'sunset_contact_form_slug');
+	
+	add_settings_field( 'sunset-contact-field-id', 'Activate Contact Form', 'sunset_contact_field_callback', 'sunset_contact_form_slug', 'sunset-contact-section-id' );
+	
 
 	
 }
+
+//callback section :contact
+
+function sunset_contact_section_callback(){
+
+	echo 'Activate and Deactivate the Built-in Contact Form';
+}
+
+//callback field :contact
+
+function sunset_contact_field_callback(){
+
+	$options = get_option( 'activate_contact' );
+	$checked = ( isset($options ) && $options == 1 ? 'checked' : '' );
+	echo '<label><input type="checkbox" id="custom_header" name="activate_contact" value="1" '.$checked.' /></label>';
+
+}
+
+
 
 //callback section :theme options
 
@@ -106,11 +149,36 @@ function sunset_post_format_callback(){
 
 }
 
+//callback field: custom header
+function sunset_custom_header_callback(){
+
+	$options = get_option( 'custom_header' );
+	$checked = ( isset($options) && $options == 1 ? 'checked' : '' );
+	echo '<label><input type="checkbox" id="custom_header" name="custom_header" value="1" '.$checked.' /> Activate the Custom Header</label>';
+
+}
+
+//callback field: custom background
+function sunset_custom_background_callback(){
+
+	$options = get_option( 'custom_background' );
+	$checked = ( isset($options) && $options == 1 ? 'checked' : '' );
+	echo '<label><input type="checkbox" id="custom_background" name="custom_background" value="1" '.$checked.' /> Activate the Custom Background</label>';
+	
+}
+
 
 //callback field: profile picture
 function sunset_profile_picture_callback(){
 	$profile_picture_url = esc_attr( get_option( 'profile_picture_url' ) );
-	echo '<input type="button" class="btn btn-secondary" id="upload_button" value="Upload profile picture" /><input type="hidden" id="profile_picture_url" name="profile_picture_url" value="'.$profile_picture_url.'"  />  ';
+
+	if( empty($profile_picture_url) ){
+		echo '<input type="button" class="button button-secondary" value="Upload Profile Picture" id="upload_button"><input type="hidden" id="profile_picture_url" name="profile_picture_url" value="" />';
+	} else {
+		echo '<input type="button" class="button button-secondary" value="Replace Profile Picture" id="upload_button"><input type="hidden" id="profile_picture_url" name="profile_picture_url" value="'.$profile_picture_url.'" /> <input type="button" class="button button-primary" value="Remove" id="remove-picture">';
+	}
+
+
 }
 
 
@@ -175,6 +243,13 @@ function sunset_general_callback() {
 function sunset_theme_options_callback(){
 
 	require_once(get_template_directory().'/inc/admin-templates/sunset-theme-options.php');
+}
+
+//contact page
+
+function sunset_contact_form_callback(){
+
+	require_once(get_template_directory().'/inc/admin-templates/sunset-contact.php');
 }
 
 //css page
