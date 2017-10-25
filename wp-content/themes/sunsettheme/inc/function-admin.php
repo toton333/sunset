@@ -100,10 +100,48 @@ function sunset_custom_settings(){
 	add_settings_section( 'sunset-contact-section-id', 'Contact Form', 'sunset_contact_section_callback', 'sunset_contact_form_slug');
 	
 	add_settings_field( 'sunset-contact-field-id', 'Activate Contact Form', 'sunset_contact_field_callback', 'sunset_contact_form_slug', 'sunset-contact-section-id' );
+
+
+	/* 
+       ========================
+		Custom CSS
+	   ========================
+
+     */
+
+	   register_setting( 'sunset-custom-css-group', 'sunset_css');
+
+	   add_settings_section( 'sunset-custom-css-section-id', 'Customize your theme', 'sunset_custom_css_section_callback', 'sunset_css_slug' );
+
+	   add_settings_field( 'sunset-custom-css-field-id', 'Insert css code', 'sunset_custom_css_field_callback', 'sunset_css_slug', 'sunset-custom-css-section-id');
+
+
 	
 
 	
 }
+
+
+//callback section :custom css
+
+function sunset_custom_css_section_callback(){
+
+	echo 'Write your custom css code here';
+}
+
+
+//callback field :custom css
+
+function sunset_custom_css_field_callback(){
+
+   $css = get_option( 'sunset_css' );
+   $css = ( empty($css) ? '/* Sunset Theme Custom CSS */' : $css );
+   	echo '<div id="customCss">'.$css.'</div><textarea id="sunset_css" name="sunset_css" style="display:none;visibility:hidden;">'.$css.'</textarea>';
+	
+}
+
+
+
 
 //callback section :contact
 
@@ -254,6 +292,6 @@ function sunset_contact_form_callback(){
 
 //css page
 function sunset_css_callback() {
-	//generation of css page
+	require_once(get_template_directory().'/inc/admin-templates/sunset-custom-css.php');
 }
 

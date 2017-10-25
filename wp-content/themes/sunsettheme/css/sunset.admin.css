@@ -13,3 +13,6 @@ h2.sunset-description { font-size: 13px; margin: 0 0 20px; }
 
 .image-container { display: block; width: 100%; overflow: hidden; text-align: center; }
 .profile-picture { width: 122px; height: 122px; overflow: hidden; border-radius: 50%; margin: 20px auto; background-position: center center; background-repeat: no-repeat; background-size: cover; }
+
+/* ace visibility*/
+#customCss { position: relative; width: 500px; height: 400px; }

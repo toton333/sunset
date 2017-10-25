@@ -1,5 +1,6 @@
 jQuery(document).ready(function($){
 
+//loading and customizing wp native media uploader
   var mediauploader;
 
    $('#upload_button').on('click', function(e){
@@ -36,6 +37,10 @@ jQuery(document).ready(function($){
 
    });
 
+
+
+   //removing profile picture
+
    $('#remove-picture').on('click',function(e){
     e.preventDefault();
     var answer = confirm("Are you sure you want to remove your Profile Picture?");
@@ -47,4 +52,16 @@ jQuery(document).ready(function($){
   });
 
 
+    //ace initiation
+    var editor = ace.edit("customCss");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/css");
+
+    //transferring ace editor value to textarea and submiting the form
+    var updateCSS = function(){ $("#sunset_css").val( editor.getSession().getValue() ); }
+    $("#save-custom-css-form").submit( updateCSS );
+
 });
+
+
+
