@@ -44,7 +44,7 @@ class Sunset_Walker_Nav_Primary extends Walker_Nav_menu {
 		$attributes .= ! empty( $item->xfn ) ? ' rel="' . esc_attr($item->xfn) . '"' : '';
 		$attributes .= ! empty( $item->url ) ? ' href="' . esc_attr($item->url) . '"' : '';
 		
-		$attributes .= ( $args->walker->has_children ) ? ' class="dropdown-toggle" data-toggle="dropdown"' : '';
+		$attributes .= ( $args->walker->has_children ) ? ' class="dropdown-toggle" data-hover="dropdown" data-toggle="dropdown"' : '';
 		
 		$item_output = $args->before;
 		$item_output .= '<a' . $attributes . '>';
