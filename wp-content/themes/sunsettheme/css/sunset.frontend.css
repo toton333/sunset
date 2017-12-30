@@ -26,15 +26,15 @@
 	Placeholder
 	------------------------------------------------
 */
-.header-container, .sunset-format-image .entry-header {
+.header-container, .sunset-format-image .entry-header, .sunset-format-gallery .carousel-control {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
 
 .entry-excerpt.image-caption {
-  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
   /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
   /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#80000000',GradientType=0 );
   /* IE6-9 */ }
@@ -280,7 +280,10 @@ a {
   ------------------------------------------------
 */
 article {
-  margin-bottom: 80px; }
+  padding-top: 40px;
+  padding-bottom: 40px; }
+  article:first-child {
+    padding-top: 80px; }
 
 h1 {
   font-size: 48px;
@@ -289,7 +292,7 @@ h1 {
     color: #000000; }
   h1.entry-title {
     line-height: 1.5em;
-    margin: 40px 0 0;
+    margin: 0;
     padding: 0; }
     h1.entry-title:before, h1.entry-title:after {
       content: '~';
@@ -389,21 +392,19 @@ h1 {
   Image Post Format 
   ------------------------------------------------
 */
-.sunset-format-image {
-  margin-top: 50px; }
-  .sunset-format-image .entry-header {
-    height: 600px;
-    position: relative; }
-  .sunset-format-image h1,
-  .sunset-format-image .entry-meta,
-  .sunset-format-image .entry-header {
+.sunset-format-image .entry-header {
+  height: 600px;
+  position: relative; }
+.sunset-format-image h1,
+.sunset-format-image .entry-meta,
+.sunset-format-image .entry-header {
+  color: #ffffff; }
+  .sunset-format-image h1 a,
+  .sunset-format-image .entry-meta a,
+  .sunset-format-image .entry-header a {
     color: #ffffff; }
-    .sunset-format-image h1 a,
-    .sunset-format-image .entry-meta a,
-    .sunset-format-image .entry-header a {
-      color: #ffffff; }
-  .sunset-format-image h1 {
-    padding-top: 10px; }
+.sunset-format-image h1 {
+  padding-top: 10px; }
 
 .entry-excerpt.image-caption {
   position: absolute;
@@ -412,6 +413,115 @@ h1 {
   right: 0;
   margin: 0; }
   .entry-excerpt.image-caption p {
-    margin: 40px 0; }
+    margin: 40px 0;
+    font-size: 14px; }
+
+/* 
+  Audio Post Format 
+  ------------------------------------------------
+*/
+.sunset-format-audio h1 {
+  font-size: 30px; }
+  .sunset-format-audio h1.entry-title {
+    display: inline-block;
+    margin-right: 20px; }
+    .sunset-format-audio h1.entry-title:before, .sunset-format-audio h1.entry-title:after {
+      display: none; }
+.sunset-format-audio .entry-meta {
+  display: inline-block;
+  margin-bottom: 0; }
+.sunset-format-audio .entry-content iframe {
+  width: 100%;
+  height: 166px; }
+
+/* 
+  Video Post Format 
+  ------------------------------------------------
+*/
+.sunset-format-video header h1.entry-title {
+  margin-top: 20px; }
+
+/* 
+  Gallery Post Format 
+  ------------------------------------------------
+*/
+.sunset-format-gallery header h1.entry-title {
+  margin-top: 20px; }
+.sunset-format-gallery .standard-featured {
+  height: 500px;
+  color: #ffffff; }
+  .sunset-format-gallery .standard-featured:after {
+    background-color: transparent; }
+.sunset-format-gallery .carousel-control {
+  background: none;
+  background-image: none;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  font-size: 30px;
+  width: auto; }
+  .sunset-format-gallery .carousel-control .preview-container {
+    position: relative;
+    display: block;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0);
+    line-height: 0;
+    -webkit-transition: background-color 320ms ease;
+    -moz-transition: background-color 320ms ease;
+    -ms-transition: background-color 320ms ease;
+    -o-transition: background-color 320ms ease;
+    transition: background-color 320ms ease; }
+    .sunset-format-gallery .carousel-control .preview-container .thumbnail-container {
+      position: absolute;
+      display: block;
+      height: 68px;
+      width: 68px;
+      border-radius: 50%;
+      background: #999;
+      top: 1px;
+      -webkit-transition: transform 320ms ease;
+      -moz-transition: transform 320ms ease;
+      -ms-transition: transform 320ms ease;
+      -o-transition: transform 320ms ease;
+      transition: transform 320ms ease;
+      -webkit-transform: scale(0);
+      -moz-transform: scale(0);
+      -ms-transform: scale(0);
+      -o-transform: scale(0);
+      transform: scale(0); }
+  .sunset-format-gallery .carousel-control.right .preview-container {
+    padding-left: 80px;
+    border-radius: 35.5px 0 0 35.5px; }
+    .sunset-format-gallery .carousel-control.right .preview-container .thumbnail-container {
+      left: 1px; }
+  .sunset-format-gallery .carousel-control.left .preview-container {
+    padding-right: 80px;
+    border-radius: 0 35.5px 35.5px 0; }
+    .sunset-format-gallery .carousel-control.left .preview-container .thumbnail-container {
+      right: 1px; }
+  .sunset-format-gallery .carousel-control:hover .preview-container {
+    background-color: rgba(0, 0, 0, 0.8); }
+    .sunset-format-gallery .carousel-control:hover .preview-container .thumbnail-container {
+      -webkit-transform: scale(1);
+      -moz-transform: scale(1);
+      -ms-transform: scale(1);
+      -o-transform: scale(1);
+      transform: scale(1); }
+.sunset-format-gallery .entry-excerpt.image-caption {
+  -webkit-transition: transform 320ms ease;
+  -moz-transition: transform 320ms ease;
+  -ms-transition: transform 320ms ease;
+  -o-transition: transform 320ms ease;
+  transition: transform 320ms ease;
+  -webkit-transform: translateY(100%);
+  -moz-transform: translateY(100%);
+  -ms-transform: translateY(100%);
+  -o-transform: translateY(100%);
+  transform: translateY(100%); }
+.sunset-format-gallery:hover .entry-excerpt.image-caption {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0); }
 
 /*# sourceMappingURL=sunset.frontend.css.map */

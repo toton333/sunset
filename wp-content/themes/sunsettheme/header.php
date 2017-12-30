@@ -19,51 +19,64 @@
 			<link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 		<?php endif; ?>
 		<?php wp_head(); ?>
-
+		
 		<?php 
-		   //custom css
 			$custom_css = esc_attr( get_option( 'sunset_css' ) );
 			if( !empty( $custom_css ) ):
 				echo '<style>' . $custom_css . '</style>';
 			endif;
 		?>
+		
 	</head>
 
 <body <?php body_class(); ?>>
-	<header class="container">
+	
+	<div class="container-fluid">
 		
 		<div class="row">
-			<div class="col-xs-12">
 				
-				<header class="header-container background-image text-center" style="background-image: url(<?php header_image(); ?>);">
-					
-					<div class="header-content table">
-						<div class="table-cell">
-							<h1 class="site-title sunset-icon">
-								<span class="sunset-logo"></span>
-								<span class="hide"><?php bloginfo( 'name' ); ?></span><!-- keeping this for SEO but hidden -->
-							</h1>
-							<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
-						</div><!-- .table-cell -->
-					</div><!-- .header-content -->
-					
-					<div class="nav-container">
-						
-						<nav class="navbar navbar-deafult navbar-sunset">
-							<?php
-								wp_nav_menu( array(
-									'theme_location' => 'primary',
-									'container' => false,
-									'menu_class' => 'nav navbar-nav',
-									'walker' => new Sunset_Walker_Nav_Primary()
-								) );	
-							?>
-						</nav>
-					</div><!-- .nav-container -->
-					
-				</header><!-- .header-container -->
+			<header class="header-container background-image text-center" style="background-image: url(<?php header_image(); ?>);">
 				
-			</div><!-- .col-xs-12 -->
+				<div class="header-content table">
+					<div class="table-cell">
+						<h1 class="site-title sunset-icon">
+							<span class="sunset-logo"></span>
+							<span class="hide"><?php bloginfo( 'name' ); ?></span>
+						</h1>
+						<h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
+					</div><!-- .table-cell -->
+				</div><!-- .header-content -->
+				
+				<div class="nav-container">
+					
+					<nav class="navbar navbar-sunset">
+						<?php
+							wp_nav_menu( array(
+								'theme_location' => 'primary',
+								'container' => false,
+								'menu_class' => 'nav navbar-nav',
+								'walker' => new Sunset_Walker_Nav_Primary()
+							) );	
+						?>
+					</nav>
+					
+				</div><!-- .nav-container -->
+				
+			</header><!-- .header-container -->
+
 		</div><!-- .row -->
 		
 	</div><!-- .container-fluid -->
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

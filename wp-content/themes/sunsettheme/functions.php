@@ -4,6 +4,7 @@ require get_template_directory() . '/inc/function-admin.php';
 require get_template_directory() . '/inc/custom-post-type.php';
 require get_template_directory() . '/inc/walker.php';
 
+
 /*
 	
 @package sunsettheme
@@ -50,6 +51,7 @@ function sunset_load_scripts(){
     wp_register_script( 'jquery', includes_url( '/js/jquery/jquery.js' ), false, NULL, true );
     wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'bootstrap', get_template_directory_uri() . '/js/bootstrap.min.js', array('jquery'), '3.3.7', true );
+	wp_enqueue_script( 'sunset', get_template_directory_uri() . '/js/sunset.js', array('jquery'), '1.0.0', true );
 
 
 }
@@ -171,22 +173,24 @@ function sunset_posted_footer(){
 }
 
 
-function sunset_get_attachment(){
+function sunset_get_attachment($num = 1){
 	
-	/* // need to detach image manualy from media library
+	 // need to detach image manualy from media library
 	$output = '';
-	if( has_post_thumbnail() ): 
-		$output = wp_get_attachment_url( get_post_thumbnail_id( get_the_ID() ) );
+	if( has_post_thumbnail() && $num == 1 ): 
+		$output =  get_the_post_thumbnail_url();
 	else:
 		$attachments = get_posts( array( 
 			'post_type' => 'attachment',
-			'posts_per_page' => 1,
+			'posts_per_page' => $num,
 			'post_parent' => get_the_ID()
 		) );
-		if( $attachments ):
+		if( $attachments && $num == 1 ):
 			foreach ( $attachments as $attachment ):
 				$output = wp_get_attachment_url( $attachment->ID );
 			endforeach;
+		elseif( $attachments && $num > 1 ):
+			$output = $attachments;
 		endif;
 		
 		wp_reset_postdata();
@@ -194,8 +198,9 @@ function sunset_get_attachment(){
 	endif;
 	
 	return $output;
-	*/
-
+	
+    
+    /*
 	global $post, $posts;
 	  $output = ' ';
 	  
@@ -211,4 +216,48 @@ function sunset_get_attachment(){
 	  endif;
 
 	  return $output;
+	  */
+}
+
+
+
+function sunset_get_embedded_media( $type = array() ){
+	$content = do_shortcode( apply_filters( 'the_content', get_the_content() ) );
+	$embed = get_media_embedded_in_content( $content, $type );
+	
+	if( in_array( 'audio' , $type) ):
+		$output = str_replace( '?visual=true', '?visual=false', $embed[0] );
+	else:
+		$output = $embed[0];
+	endif;
+	
+	return $output;
+}
+
+function sunset_get_bs_slides( $attachments ){
+	
+	$output = array();
+	$count = count($attachments)-1;
+	
+	for( $i = 0; $i <= $count; $i++ ): 
+	
+		$active = ( $i == 0 ? ' active' : '' );
+		
+		$n = ( $i == $count ? 0 : $i+1 );
+		$nextImg = wp_get_attachment_thumb_url( $attachments[$n]->ID );
+		$p = ( $i == 0 ? $count : $i-1 );
+		$prevImg = wp_get_attachment_thumb_url( $attachments[$p]->ID );
+		
+		$output[$i] = array( 
+			'class'		=> $active, 
+			'url'		=> wp_get_attachment_url( $attachments[$i]->ID ),
+			'next_img'	=> $nextImg,
+			'prev_img'	=> $prevImg,
+			'caption'	=> $attachments[$i]->post_excerpt
+		);
+	
+	endfor;
+	
+	return $output;
+	
 }
