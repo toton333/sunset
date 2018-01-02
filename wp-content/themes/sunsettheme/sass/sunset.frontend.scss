@@ -238,8 +238,101 @@ h1 { font-size: 48px; font-weight: 200;
 }
 
 
+/* 
+  Quote Post Format 
+  ------------------------------------------------
+*/
+
+.sunset-format-quote {
+  .quote-content { font-size: 42px; font-weight: 100; line-height: 1.3em; letter-spacing: 0.03em; 
+    &:before,
+    &:after { content: ''; display: inline-block; position: relative; color: #ccc; }
+    &:before { content: '"'; }
+    &:after { content: '"'; }
+  }
+  .quote-author { color: #898989; font-size: 12px; letter-spacing: 0.06em; margin-top: 10px; margin-block-end: 30px; }
+}
 
 
+/* 
+  Link Post Format 
+  ------------------------------------------------
+*/
 
+.sunset-format-link {
+  h1 {
+    &.entry-title {
+      &:before, &:after { display: none; }
+      
+      a {
+        display: block;
+      }
+      
+      .link-icon {
+        display: block;
+        color: #fff;
+        font-size: 30px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.6);
+        margin: 0 auto;
+        line-height: 1em;
+        padding-top: 10px;
+      }
+      
+    }
+  }
+}
+
+/* 
+  Aside Post Format 
+  ------------------------------------------------
+*/
+
+.sunset-format-aside {
+  
+  .aside-container {
+    background-color: rgba(0,0,0,0.05);
+    padding-top: 20px;
+  }
+  
+  .aside-featured {
+    width: 136px;
+    height: 136px;
+    border-radius: 50%;
+    margin: 0 auto -20px;
+  }
+  
+  .entry-meta {
+    margin-bottom: 5px;
+  }
+  
+  .entry-excerpt {
+    margin-top: 0;
+    p {
+      font-size: 15px;
+      padding-right: 10px;
+    }
+  }
+  
+  .entry-footer {
+    border-bottom: none;
+    background-color: rgba(0,0,0,0.05);
+    padding-right: 10px;
+  }
+  
+}
+
+/* 
+  Footer Section
+  ------------------------------------------------
+*/
+.sunset-footer {
+  background-color: #333;
+  padding: 20px 0;
+  margin-top: 40px;
+  display: block;
+}
 
 
