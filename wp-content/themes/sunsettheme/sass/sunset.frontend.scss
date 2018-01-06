@@ -85,9 +85,7 @@ a { color: $primary-color; @include animate( color, 320ms );
   Standard Post Format 
   ------------------------------------------------
 */
-article { padding-top: 40px; padding-bottom: 40px; 
-  &:first-child { padding-top: 80px; }
-}
+article { padding-top: 40px; padding-bottom: 40px; }
 
 h1 { font-size: 48px; font-weight: 200;
   a { color: $primary-color; }
@@ -237,7 +235,6 @@ h1 { font-size: 48px; font-weight: 200;
   
 }
 
-
 /* 
   Quote Post Format 
   ------------------------------------------------
@@ -247,12 +244,11 @@ h1 { font-size: 48px; font-weight: 200;
   .quote-content { font-size: 42px; font-weight: 100; line-height: 1.3em; letter-spacing: 0.03em; 
     &:before,
     &:after { content: ''; display: inline-block; position: relative; color: #ccc; }
-    &:before { content: '"'; }
-    &:after { content: '"'; }
+    &:before { content: '“'; }
+    &:after { content: '„'; }
   }
   .quote-author { color: #898989; font-size: 12px; letter-spacing: 0.06em; margin-top: 10px; margin-block-end: 30px; }
 }
-
 
 /* 
   Link Post Format 
@@ -334,5 +330,86 @@ h1 { font-size: 48px; font-weight: 200;
   margin-top: 40px;
   display: block;
 }
+
+/* 
+  Ajax Loading
+  ------------------------------------------------
+*/
+.container-load-previous {
+  margin-top: 40px;
+  margin-bottom: -40px;
+}
+
+.sunset-posts-container {
+  
+  padding-top: 40px;
+  
+  article {
+    @include animate( all, 320ms );
+    @include transform( translateY(100px) );
+    opacity: 0;
+    
+    &.reveal {
+      @include transform( translateY(0) );
+      opacity: 1;
+    }
+    
+  }
+  
+}
+
+.btn-sunset-load {
+  display: block;
+  width: 200px;
+  color: #222;
+  font-size: 30px;
+  margin: 0 auto;
+  cursor: pointer;
+  opacity: 0.5;
+  @include animate( opacity, 320ms );
+  
+  &:hover,
+  &:focus,
+  &.loading {
+    opacity: 1;
+  }
+  
+  &.loading {
+    cursor: default;
+  }
+  
+  span {
+    display: block;
+  }
+  
+}
+
+.spin {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
