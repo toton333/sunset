@@ -5,26 +5,27 @@ jQuery(document).ready( function($){
 	revealPosts();
 	
 	/* variable decalarations */
-	var carousel = '.sunset-carousel-thumb';
 	var last_scroll = 0;
 	
 	/* carousel functions */
-	sunset_get_bs_thumbs(carousel);
-
-	$(carousel).on('slid.bs.carousel', function(){
-		sunset_get_bs_thumbs(carousel);
-	});
+	$(document).on('click', '.sunset-carousel-thumb', function() {
+    	var id = $("#" + $(this).attr("id"));
+    	$(id).on('slid.bs.carousel', function () { 
+	    	sunset_get_bs_thumbs(id);
+    	});
+    });
+    
+    $(document).on('mouseenter', '.sunset-carousel-thumb', function() {
+    	var id = $("#" + $(this).attr("id"));
+        sunset_get_bs_thumbs(id);
+    });
 	
-	function sunset_get_bs_thumbs( carousel ){
-	
-		$(carousel).each(function(){
+	function sunset_get_bs_thumbs( id ){
 			
-			var nextThumb = $(this).find('.item.active').find('.next-image-preview').data('image');
-			var prevThumb = $(this).find('.item.active').find('.prev-image-preview').data('image');
-			$(this).find('.carousel-control.right').find('.thumbnail-container').css({ 'background-image' : 'url('+nextThumb+')' });
-			$(this).find('.carousel-control.left').find('.thumbnail-container').css({ 'background-image' : 'url('+prevThumb+')' });
-			
-		});
+		var nextThumb = $(id).find(".item.active").find(".next-image-preview").data("image");
+        var prevThumb = $(id).find(".item.active").find(".prev-image-preview").data("image");
+        $(id).find(".right.carousel-control").find(".thumbnail-container").css({"background-image" : "url("+ nextThumb +")"});
+        $(id).find(".left.carousel-control").find(".thumbnail-container").css({"background-image" : "url("+ prevThumb +")"});
 		
 	}
 	
@@ -36,9 +37,14 @@ jQuery(document).ready( function($){
 		var newPage = page+1;
 		var ajaxurl = that.data('url');
 		var prev = that.data('prev');
+		var archive = that.data('archive');
 		
 		if( typeof prev === 'undefined' ){
 			prev = 0;
+		}
+		
+		if( typeof archive === 'undefined' ){
+			archive = 0;
 		}
 		
 		that.addClass('loading').find('.text').slideUp(320);
@@ -52,6 +58,7 @@ jQuery(document).ready( function($){
 				
 				page : page,
 				prev : prev,
+				archive : archive,
 				action: 'sunset_load_more'
 				
 			},
@@ -157,3 +164,16 @@ jQuery(document).ready( function($){
 	
 	
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
