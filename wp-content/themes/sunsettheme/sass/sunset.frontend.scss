@@ -10,6 +10,7 @@
 @import 'base/mixins';      //mixins
 @import 'base/placeholders';  //placeholders
 @import 'base/fonticon';    //font icons
+@import 'base/wordpress';   //wordpress default classes
 
 /* 
   Generic 
@@ -391,8 +392,55 @@ h1 { font-size: 48px; font-weight: 200;
   animation-timing-function: linear;
 }
 
+/* 
+  Single
+  ------------------------------------------------
+*/
 
+.entry-content {
+  margin-top: 40px;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+  font-weight: 300;
+  line-height: 1.7em;
+  
+  a,
+  .sunset-tooltip,
+  .sunset-popover {
+    cursor: pointer;
+    color: #ff9d1d;
+    
+    &:hover,
+    &:focus {
+      color: #F56B08;
+    }
+    
+  }
+  
+  p {
+    margin-bottom: 15px;
+  }
+  
+  b,
+  strong {
+    font-weight: 500;
+  }
+  
+}
 
+.post-link-nav {
+  padding: 10px 0;
+  
+  a {
+    padding: 0 5px;
+    
+    &:hover,
+    &:focus {
+      color: #ff9d1d;
+    }
+  }
+  
+}
 
 
 
