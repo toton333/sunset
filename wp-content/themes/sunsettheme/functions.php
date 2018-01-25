@@ -1,9 +1,13 @@
 <?php
 
+require get_template_directory().'/inc/vendor/Mobile_Detect.php';
+
 require get_template_directory() . '/inc/function-admin.php';
 require get_template_directory() . '/inc/custom-post-type.php';
 require get_template_directory() . '/inc/walker.php';
 require get_template_directory() . '/inc/shortcodes.php';
+require get_template_directory() . '/inc/widgets.php';
+require get_template_directory() . '/inc/ajax.php';
 
 
 /*
@@ -41,8 +45,7 @@ function sunset_load_scripts(){
 	
 	wp_enqueue_style( 'bootstrap', get_template_directory_uri() . '/css/bootstrap.min.css', array(), '3.3.7', 'all' );
 
-
-
+	wp_enqueue_style( 'dashicons' );
 
 	wp_enqueue_style( 'sunset', get_template_directory_uri() . '/css/sunset.frontend.css', array(), '1.0.0', 'all' );
 	wp_enqueue_style( 'raleway', 'https://fonts.googleapis.com/css?family=Raleway:200,300,500' );
@@ -93,6 +96,39 @@ function sunset_register_nav_menu() {
 }
 add_action( 'after_setup_theme', 'sunset_register_nav_menu' );
 
+
+/* Activate HTML5 features */
+add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
+
+// Initialize global Mobile Detect
+function mobileDetectGlobal() {
+    global $detect;
+    $detect = new Mobile_Detect;
+}
+add_action('after_setup_theme', 'mobileDetectGlobal');
+
+
+/*
+	========================
+		SIDEBAR FUNCTIONS
+	========================
+*/
+function sunset_sidebar_init() {
+	
+	register_sidebar( 
+		array(
+			'name' => esc_html__( 'Sunset Sidebar', 'sunsettheme'),
+			'id' => 'sunset-sidebar',
+			'description' => 'Dynamic Right Sidebar',
+			'before_widget' => '<section id="%1$s" class="sunset-widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h2 class="sunset-widget-title">',
+			'after_title' => '</h2>'
+		)
+	);
+	
+}
+add_action( 'widgets_init', 'sunset_sidebar_init' );
 
 
 
@@ -271,113 +307,7 @@ function sunset_grab_url() {
 }
 
 
-//ajax load more
 
-add_action( 'wp_ajax_nopriv_sunset_load_more', 'sunset_load_more' );
-add_action( 'wp_ajax_sunset_load_more', 'sunset_load_more' );
-
-
-function sunset_load_more() {
-	
-	$paged = $_POST["page"]+1;
-	$prev = $_POST["prev"];
-	$archive = $_POST["archive"];
-	
-	if( $prev == 1 && $_POST["page"] != 1 ){
-		$paged = $_POST["page"]-1;
-	}
-	
-	$args = array(
-		'post_type' => 'post',
-		'post_status' => 'publish',
-		'paged' => $paged
-	);
-	
-	if( $archive != '0' ){
-		
-		$archVal = explode( '/', $archive );
-		$flipped = array_flip($archVal);
-		
-		switch( isset( $flipped ) ) {
-			
-			case $flipped["category"] :
-				$type = "category_name";
-				$key = "category";
-				break;
-				
-			case $flipped["tag"] :
-				$type = "tag";
-				$key = $type;
-				break;
-				
-			case $flipped["author"] :
-				$type = "author";
-				$key = $type;
-				break;
-			
-		}
-		
-		$currKey = array_keys( $archVal, $key );
-		$nextKey = $currKey[0]+1;
-		$value = $archVal[ $nextKey ];
-			
-		$args[ $type ] = $value;
-		
-		//check page trail and remove "page" value
-		if( isset( $flipped["page"] ) ){
-			
-			$pageVal = explode( 'page', $archive );
-			$page_trail = $pageVal[0];
-			
-		} else {
-			$page_trail = $archive;
-		}
-		
-	} else {
-		$page_trail = get_site_url().'/';
-	}
-	
-	$query = new WP_Query( $args );
-	
-	if( $query->have_posts() ):
-		
-		echo '<div class="page-limit" data-page="' . $page_trail . 'page/' . $paged . '/">';
-				
-		while( $query->have_posts() ): $query->the_post();
-		
-			get_template_part( 'template-parts/content', get_post_format() );
-		
-		endwhile;
-		
-		echo '</div>';
-		
-	else:
-	
-		echo 0;
-		
-	endif;
-	
-	wp_reset_postdata();
-	
-	die();
-	
-}
-
-
-function sunset_check_paged( $num = null ){
-	
-	$output = '';
-	
-	if( is_paged() ){ $output = 'page/' . get_query_var( 'paged' ); }
-	
-	if( $num == 1 ){
-		$paged = ( get_query_var( 'paged' ) == 0 ? 1 : get_query_var( 'paged' ) );
-		return $paged;
-	} else {
-		return $output;
-	}
-	
-}
 
 
 function sunset_grab_current_uri() {
@@ -409,4 +339,61 @@ function sunset_post_navigation(){
 	return $nav;
 	
 }
+
+
+function sunset_share_this( $content ){
+	
+	if( is_single() ){
+	
+		$content .= '<div class="sunset-shareThis"><h4>Share This</h4>';
+				
+		$title = get_the_title();
+		$permalink = get_permalink();
+		
+		$twitterHandler = ( get_option('twitter_handler') ? '&amp;via='.esc_attr( get_option('twitter_handler') ) : '' );
+		
+		$twitter = 'https://twitter.com/intent/tweet?text=Hey! Read this: ' . $title . '&amp;url=' . $permalink . $twitterHandler .'';
+		$facebook = 'https://www.facebook.com/sharer/sharer.php?u=' . $permalink;
+		$google = 'https://plus.google.com/share?url=' . $permalink;
+			
+		$content .= '<ul>';
+		$content .= '<li><a href="' . $twitter . '" target="_blank" rel="nofollow"><span class="dashicons dashicons-twitter"></span></a></li>';
+
+		$content .= '<li><a href="' . $google . '" target="_blank" rel="nofollow"><span class="dashicons dashicons-googleplus"></span></a></li>';
+
+		$content .= '<li><a href="' . $facebook . '" target="_blank" rel="nofollow"><span class="dashicons dashicons-facebook-alt"></span></a></li>';
+		$content .= '</ul></div><!-- .sunset-share -->';
+		
+		return $content;
+	
+	} else {
+		return $content;
+	}
+	
+}
+add_filter( 'the_content', 'sunset_share_this' );
+
+
+function sunset_get_comment_navigation(){
+	
+	if( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ):
+	
+		require( get_template_directory() . '/inc/frontend-templates/sunset-comment-nav.php' );
+	
+	endif;
+	
+}
+
+//mailtrap
+
+function mailtrap($phpmailer) {
+  $phpmailer->isSMTP();
+  $phpmailer->Host = 'smtp.mailtrap.io';
+  $phpmailer->SMTPAuth = true;
+  $phpmailer->Port = 2525;
+  $phpmailer->Username = 'c9122f004625d3';
+  $phpmailer->Password = 'fd6d16b3858e52';
+}
+
+add_action('phpmailer_init', 'mailtrap');
 
